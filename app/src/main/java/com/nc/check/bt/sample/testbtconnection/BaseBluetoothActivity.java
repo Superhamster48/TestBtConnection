@@ -5,17 +5,17 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 import android.widget.*;
 
 import com.nc.check.bt.sample.testbtconnection.bluetooth.*;
 
 import java.util.List;
 
-public class BaseBluetoothActivity extends AppCompatActivity {
+public abstract class BaseBluetoothActivity extends AppCompatActivity {
 
     protected BtController btController;
     private RadioGroup mAddressesView;
-
 
     private static final String TAG = BaseBluetoothActivity.class.getSimpleName();
 
@@ -28,9 +28,7 @@ public class BaseBluetoothActivity extends AppCompatActivity {
         setupAddress();
     }
 
-    protected void writeReceivedMessage(String strIncom) {
-        Log.i("BaseBluetoothActivity", "received: " + strIncom);
-    }
+    abstract protected void writeReceivedMessage(String strIncom);
 
     private Handler getHandler() {
         return new Handler() {
@@ -93,5 +91,9 @@ public class BaseBluetoothActivity extends AppCompatActivity {
         super.onPause();
         btController.stop();
         btController.setHandler(null);
+    }
+
+    interface MessageReceiver {
+        void onMessage(String message);
     }
 }

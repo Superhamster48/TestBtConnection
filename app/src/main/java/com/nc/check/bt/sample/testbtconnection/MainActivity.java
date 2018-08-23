@@ -13,8 +13,6 @@ public class MainActivity extends BaseBluetoothActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupControls();
-        setupSendCommand();
         setupSendBits();
     }
 
@@ -22,43 +20,6 @@ public class MainActivity extends BaseBluetoothActivity {
         TextView textView = findViewById(R.id.label_data);
         textView.setText(textView.getText() + "received: " + strIncom + "\n");
         Toast.makeText(MainActivity.this, "Received: " + strIncom, Toast.LENGTH_LONG);
-    }
-
-    private void setupControls() {
-        Button btnAccept = findViewById(R.id.btn_accept);
-        btnAccept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btController.start();
-            }
-        });
-        Button btnConnect = findViewById(R.id.btn_connect);
-        btnConnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btController.connect();
-            }
-        });
-        Button btnStop = findViewById(R.id.btn_stop);
-        btnStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btController.stop();
-            }
-        });
-
-    }
-
-    private void setupSendCommand() {
-        Button btnSend =  findViewById(R.id.button_send);
-        mEtCommand = findViewById(R.id.et_cmd);
-
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btController.write(mEtCommand.getText().toString());
-            }
-        });
     }
 
     private void setupSendBits() {
@@ -91,4 +52,20 @@ public class MainActivity extends BaseBluetoothActivity {
         });
     }
 
+    public void stop(View view) {
+        btController.stop();
+    }
+
+    public void connect(View view) {
+        btController.connect();
+    }
+
+    public void start(View view) {
+        btController.start();
+    }
+
+    public void send(View view) {
+        mEtCommand = findViewById(R.id.et_cmd);
+        btController.write(mEtCommand.getText().toString());
+    }
 }

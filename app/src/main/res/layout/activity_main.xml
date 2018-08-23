@@ -5,7 +5,7 @@
     android:id="@+id/constraintControllerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BaseBtActivity">
+    tools:context=".MainActivity">
 
     <TextView
         android:text="MAC addresses of bound devices"
@@ -65,6 +65,7 @@
 
     <Button
         android:text="Send"
+        android:onClick="send"
         android:layout_width="71dp"
         android:layout_height="40dp"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -193,6 +194,7 @@
     <Button
         android:text="Listen"
         android:id="@+id/btn_accept"
+        android:onClick="start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -204,6 +206,7 @@
         android:id="@+id/btn_connect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="connect"
         app:layout_constraintLeft_toRightOf="@id/btn_accept"
         app:layout_constraintTop_toBottomOf="@id/btn_send_bits"
         />
@@ -214,6 +217,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:onClick="stop"
         app:layout_constraintLeft_toRightOf="@id/btn_connect"
         app:layout_constraintTop_toBottomOf="@id/btn_send_bits"
         />
