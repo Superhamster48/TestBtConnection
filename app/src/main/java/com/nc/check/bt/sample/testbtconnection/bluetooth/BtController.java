@@ -1,5 +1,7 @@
 package com.nc.check.bt.sample.testbtconnection.bluetooth;
 
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.Pair;
 
 import java.util.List;
@@ -19,4 +21,6 @@ public interface BtController {
     void write(String message);
 
     void setSelectedMacAddress(String selectedMacAddress);
+
+    void setHandler(Handler handler);
 }

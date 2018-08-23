@@ -24,7 +24,7 @@ public class BaseBluetoothActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btController = new BtControllerImpl(getHandler());
+        btController = new BtControllerImpl();
         setupAddress();
     }
 
@@ -83,8 +83,15 @@ public class BaseBluetoothActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        btController.setHandler(getHandler());
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         btController.stop();
+        btController.setHandler(null);
     }
 }

@@ -30,9 +30,8 @@ public class BtControllerImpl implements BtController {
     // SPP UUID сервиса
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    public BtControllerImpl(@NonNull Handler handler) {
+    public BtControllerImpl() {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
-        mHandler = handler;
         mState = STATE_NONE;
     }
 
@@ -114,12 +113,14 @@ public class BtControllerImpl implements BtController {
         mConnectedThread = new ConnectedThread(socket);
         mConnectedThread.start();
 
-        // Send the name of the connected device back to the UI Activity
-        Message msg = mHandler.obtainMessage(BtConstants.MESSAGE_DEVICE_NAME);
-        Bundle bundle = new Bundle();
-        bundle.putString(BtConstants.DEVICE_NAME, device.getName());
-        msg.setData(bundle);
-        mHandler.sendMessage(msg);
+        if (mHandler != null) {
+            // Send the name of the connected device back to the UI Activity
+            Message msg = mHandler.obtainMessage(BtConstants.MESSAGE_DEVICE_NAME);
+            Bundle bundle = new Bundle();
+            bundle.putString(BtConstants.DEVICE_NAME, device.getName());
+            msg.setData(bundle);
+            mHandler.sendMessage(msg);
+        }
     }
 
     /**
@@ -214,16 +215,23 @@ public class BtControllerImpl implements BtController {
         mSelectedMacAddress = selectedMacAddress;
     }
 
+    public void setHandler(Handler handler) {
+        this.mHandler = handler;
+    }
+
     /**
      * Indicate that the connection attempt failed and notify the UI Activity.
      */
     private void connectionFailed() {
-        // Send a failure message back to the Activity
-        Message msg = mHandler.obtainMessage(BtConstants.MESSAGE_TOAST);
-        Bundle bundle = new Bundle();
-        bundle.putString(BtConstants.TOAST, "Unable to connect device");
-        msg.setData(bundle);
-        mHandler.sendMessage(msg);
+        if (mHandler != null) {
+
+            // Send a failure message back to the Activity
+            Message msg = mHandler.obtainMessage(BtConstants.MESSAGE_TOAST);
+            Bundle bundle = new Bundle();
+            bundle.putString(BtConstants.TOAST, "Unable to connect device");
+            msg.setData(bundle);
+            mHandler.sendMessage(msg);
+        }
 
         setState(STATE_NONE);
 
@@ -235,12 +243,14 @@ public class BtControllerImpl implements BtController {
      * Indicate that the connection was lost and notify the UI Activity.
      */
     private void connectionLost() {
-        // Send a failure message back to the Activity
-        Message msg = mHandler.obtainMessage(BtConstants.MESSAGE_TOAST);
-        Bundle bundle = new Bundle();
-        bundle.putString(BtConstants.TOAST, "Device connection was lost");
-        msg.setData(bundle);
-        mHandler.sendMessage(msg);
+        if (mHandler != null) {
+            // Send a failure message back to the Activity
+            Message msg = mHandler.obtainMessage(BtConstants.MESSAGE_TOAST);
+            Bundle bundle = new Bundle();
+            bundle.putString(BtConstants.TOAST, "Device connection was lost");
+            msg.setData(bundle);
+            mHandler.sendMessage(msg);
+        }
 
         setState(STATE_NONE);
 
@@ -251,9 +261,11 @@ public class BtControllerImpl implements BtController {
     private void setState(int state) {
         Log.d(TAG, "Socket BEGIN mAcceptThread" + this);
         mState = state;
-        Message msg = mHandler.obtainMessage(BtConstants.MESSAGE_STATE_CHANGE);
-        msg.what = state;
-        mHandler.sendMessage(msg);
+        if (mHandler != null) {
+            Message msg = mHandler.obtainMessage(BtConstants.MESSAGE_STATE_CHANGE);
+            msg.what = state;
+            mHandler.sendMessage(msg);
+        }
     }
 
     /**
@@ -440,9 +452,12 @@ public class BtControllerImpl implements BtController {
                     // Read from the InputStream
                     bytes = mmInStream.read(buffer);
                     if (bytes > 0) {
-                        // Send the obtained bytes to the UI Activity
-                        mHandler.obtainMessage(BtConstants.MESSAGE_READ, bytes, -1, buffer)
-                                .sendToTarget();
+                        if (mHandler != null) {
+
+                            // Send the obtained bytes to the UI Activity
+                            mHandler.obtainMessage(BtConstants.MESSAGE_READ, bytes, -1, buffer)
+                                    .sendToTarget();
+                        }
                     }
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
@@ -460,10 +475,11 @@ public class BtControllerImpl implements BtController {
         public void write(byte[] buffer) {
             try {
                 mmOutStream.write(buffer);
-
-                // Share the sent message back to the UI Activity
-                mHandler.obtainMessage(BtConstants.MESSAGE_WRITE, -1, -1, buffer)
-                        .sendToTarget();
+                if (mHandler != null) {
+                    // Share the sent message back to the UI Activity
+                    mHandler.obtainMessage(BtConstants.MESSAGE_WRITE, -1, -1, buffer)
+                            .sendToTarget();
+                }
             } catch (IOException e) {
                 Log.e(TAG, "Exception during write", e);
             }
