@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:text="MAC addresses of bound devices"
+        android:text="MAC addresses of bound devices: "
         android:id="@+id/label_mac"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,166 +75,65 @@
         app:layout_constraintTop_toTopOf="@id/et_cmd"
         android:id="@+id/button_send" />
 
-    <TextView
-        android:id="@+id/label_bits"
-        android:text="Bits to send / command number: "
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_cmd"
-        />
-
-    <TextView
-        android:id="@+id/label_bits_cmd"
-        android:text="0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        app:layout_constraintLeft_toRightOf="@id/label_bits"
-        app:layout_constraintTop_toTopOf="@id/label_bits"
-        />
-
-
-    <TextView
-        android:id="@+id/label_bits_one"
-        android:text="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/label_bits"
-        android:textStyle="bold"
-        android:visibility="invisible"
-        />
-
-    <CheckBox
-        android:id="@+id/cb_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@id/label_bits_one"
-        />
-
-    <CheckBox
-        android:id="@+id/cb_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/cb_1"
-        app:layout_constraintTop_toTopOf="@id/cb_1"
-        />
-
-    <CheckBox
-        android:id="@+id/cb_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/cb_2"
-        app:layout_constraintTop_toTopOf="@id/cb_2"
-        />
-
-    <CheckBox
-        android:id="@+id/cb_4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/cb_3"
-        app:layout_constraintTop_toTopOf="@id/cb_3"
-        />
-
-    <CheckBox
-        android:id="@+id/cb_5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/cb_4"
-        app:layout_constraintTop_toTopOf="@id/cb_4"
-        />
-
-    <CheckBox
-        android:id="@+id/cb_6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/cb_5"
-        app:layout_constraintTop_toTopOf="@id/cb_5"
-        />
-
-    <CheckBox
-        android:id="@+id/cb_7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/cb_6"
-        app:layout_constraintTop_toTopOf="@id/cb_6"
-        />
-
-    <CheckBox
-        android:id="@+id/cb_8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/cb_7"
-        app:layout_constraintTop_toTopOf="@id/cb_7"
-        />
-
     <Button
-        android:text="Send bits"
-        android:id="@+id/btn_send_bits"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        app:layout_constraintRight_toRightOf="@id/cb_8"
-        app:layout_constraintTop_toBottomOf="@id/cb_8"
-        />
-
-    <Button
-        android:text="Listen"
         android:id="@+id/btn_accept"
-        android:onClick="start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:onClick="start"
+        android:text="Listen"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_send_bits"
-        />
+        app:layout_constraintTop_toBottomOf="@id/btn_send_bits" />
 
     <Button
-        android:text="Connect"
         android:id="@+id/btn_connect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginStart="44dp"
         android:onClick="connect"
+        android:text="Connect"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/btn_accept"
-        app:layout_constraintTop_toBottomOf="@id/btn_send_bits"
-        />
+        app:layout_constraintStart_toEndOf="@+id/btn_accept"
+        app:layout_constraintTop_toBottomOf="@id/btn_send_bits" />
 
     <Button
-        android:text="Stop"
         android:id="@+id/btn_stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginStart="8dp"
         android:onClick="stop"
+        android:text="Stop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.939"
         app:layout_constraintLeft_toRightOf="@id/btn_connect"
-        app:layout_constraintTop_toBottomOf="@id/btn_send_bits"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_send_bits" />
 
 
     <TextView
         android:id="@+id/label_data"
-        android:text="Received messages:\n"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        tools:layout_constraintLeft_creator="1"
+        android:layout_width="134dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="124dp"
+        android:layout_marginLeft="240dp"
+        android:layout_marginTop="8dp"
+        android:text="Received messages: \n"
+        app:layout_constraintBottom_toTopOf="@+id/btn_connect"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_accept"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/button_send"
+        app:layout_constraintVertical_bias="0.461"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
 </android.support.constraint.ConstraintLayout>
