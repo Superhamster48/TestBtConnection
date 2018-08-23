@@ -1,91 +1,94 @@
 package com.nc.check.bt.sample.testbtconnection;
 
 import android.os.Bundle;
-import android.support.v4.app.*;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.*;
+import android.view.View;
+import android.widget.*;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseBluetoothActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
+    private EditText mEtCommand;
+    private TextView mBitCommandLabel;
+    private int mBitCommand = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager)findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        setupControls();
+        setupSendCommand();
+        setupSendBits();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    protected void writeReceivedMessage(String strIncom) {
+        TextView textView = findViewById(R.id.label_data);
+        textView.setText(textView.getText() + "received: " + strIncom + "\n");
+        Toast.makeText(MainActivity.this, "Received: " + strIncom, Toast.LENGTH_LONG);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            if (position == 0) {
-                return BluetoothControllerFragment.newInstance();
+    private void setupControls() {
+        Button btnAccept = findViewById(R.id.btn_accept);
+        btnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btController.start();
             }
-            return BluetoothReceiverFragment.newInstance();
+        });
+        Button btnConnect = findViewById(R.id.btn_connect);
+        btnConnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btController.connect();
+            }
+        });
+        Button btnStop = findViewById(R.id.btn_stop);
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btController.stop();
+            }
+        });
+
+    }
+
+    private void setupSendCommand() {
+        Button btnSend =  findViewById(R.id.button_send);
+        mEtCommand = findViewById(R.id.et_cmd);
+
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btController.write(mEtCommand.getText().toString());
+            }
+        });
+    }
+
+    private void setupSendBits() {
+        mBitCommandLabel = findViewById(R.id.label_bits_cmd);
+        int [] ids = {R.id.cb_1, R.id.cb_2, R.id.cb_3, R.id.cb_4, R.id.cb_5, R.id.cb_6, R.id.cb_7, R.id.cb_8};
+
+        for (int i = 0 ; i < ids.length ; i++) {
+            CheckBox checkBox = findViewById(ids[i]);
+            checkBox.setTag(ids.length - 1 - i);
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    int shift = (Integer)buttonView.getTag();
+                    if (isChecked) {
+                        mBitCommand |= 1 << shift;
+                    } else {
+                        mBitCommand &= ~1 << shift;
+                    }
+                    mBitCommandLabel.setText(String.valueOf(mBitCommand));
+                }
+            });
         }
 
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 1;
-        }
+        Button btnSendBits = findViewById(R.id.btn_send_bits);
+        btnSendBits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btController.write(String.valueOf(mBitCommand));
+            }
+        });
     }
+
 }
